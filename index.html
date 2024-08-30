@@ -1,1 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Shopping List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+        .header a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .header a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .list-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .list-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .list-item button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+        }
+        .list-item button:hover {
+            background-color: #c82333;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="#" onclick="showSection('home')">Home</a>
+        <a href="#" onclick="showSection('shopping-list')">Shopping List</a>
+        <a href="#" onclick="showSection('other-lists')">Other Lists</a>
+    </div>
+
+    <div id="home" class="container">
+        <h1>Welcome to the Senior Shopping List App</h1>
+        <p>Use the navigation menu to manage your shopping lists. Click on "Shopping List" to add, remove, or check off items.</p>
+    </div>
+
+    <div id="shopping-list" class="container hidden">
+        <h1>Shopping List</h1>
+        <form id="shopping-form">
+            <input type="text" id="item" placeholder="Enter item..." required>
+            <input type="submit" value="Add Item">
+        </form>
+        <div id="shopping-list-container">
+            <!-- List items will appear here -->
+        </div>
+    </div>
+
+    <div id="other-lists" class="container hidden">
+        <h1>Other Lists</h1>
+        <p>Manage other types of lists here. This feature is under construction.</p>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.container').forEach(container => {
+                container.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        document.getElementById('shopping-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const itemInput = document.getElementById('item');
+            const itemText = itemInput.value.trim();
+
+            if (itemText !== '') {
+                addItemToList(itemText);
+                itemInput.value = '';
+                itemInput.focus();
+            }
+        });
+
+        function addItemToList(itemText) {
+            const listContainer = document.getElementById('shopping-list-container');
+            const listItem = document.createElement('div');
+            listItem.className = 'list-item';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = 'item-' + Date.now(); // Unique ID for each item
+
+            const label = document.createElement('label');
+            label.htmlFor = checkbox.id;
+            label.textContent = itemText;
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = function() {
+                listContainer.removeChild(listItem);
+            };
+
+            listItem.appendChild(checkbox);
+            listItem.appendChild(label);
+            listItem.appendChild(removeButton);
+            listContainer.appendChild(listItem);
+        }
+        
+        // Show the home section by default
+        showSection('home');
+    </script>
+</body>
+</html>
 
